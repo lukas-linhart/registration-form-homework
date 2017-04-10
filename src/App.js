@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 
 const DATE_FORMAT = 'DD.MM.YYYY';
+const FIRST_NAME_MAX_LENGTH = 20;
+const LAST_NAME_MAX_LENGTH = 30;
 
 
 class FormField extends Component {
@@ -73,8 +75,14 @@ class RegistrationForm extends Component {
     this.state = state;
 
     this.inputParams = {
-      firstName: { label: 'First name', validationHandler: this.validateFirstName },
-      lastName: { label: 'Last name' },
+      firstName: {
+        label: 'First name',
+        validationHandler: this.validateFirstName.bind(this)
+      },
+      lastName: {
+        label: 'Last name',
+        validationHandler: this.validateLastName.bind(this)
+      },
       email: { label: 'Email' },
       address: { label: 'Address' },
       birthdate: { label: 'Birthday', placeholder: DATE_FORMAT },
@@ -104,7 +112,45 @@ class RegistrationForm extends Component {
   }
 
   validateFirstName() {
-    console.log('validating first name');
+    const length = this.state.firstNameValue.trim().length;
+    if (length === 0) {
+      this.setState({
+        firstNameError: `First name can't be empty`
+      });
+      return;
+    }
+    if (length > FIRST_NAME_MAX_LENGTH) {
+      this.setState({
+        firstNameError: `First name can't have more than
+          ${FIRST_NAME_MAX_LENGTH} characters`
+      });
+      return;
+    }
+    this.setState({
+      firstNameIsValid: true,
+      firstNameError: ''
+    });
+  }
+
+  validateLastName() {
+    const length = this.state.lastNameValue.trim().length;
+    if (length === 0) {
+      this.setState({
+        lastNameError: `Last name can't be empty`
+      });
+      return;
+    }
+    if (length > LAST_NAME_MAX_LENGTH) {
+      this.setState({
+        lastNameError: `Last name can't have more than
+          ${LAST_NAME_MAX_LENGTH} characters`
+      });
+      return;
+    }
+    this.setState({
+      lastNameIsValid: true,
+      lastNameError: ''
+    });
   }
 
   handleSubmit(event) {
