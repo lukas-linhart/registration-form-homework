@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import axios from './api/axios';
 
 const emailValidator = require('email-validator');
 const moment = require('moment');
@@ -190,7 +191,10 @@ class RegistrationForm extends Component {
       }
     })
     .then( () => {
-      console.log('TODO: send request to server');
+      return axios.post('/validate', { email: email })
+      .then( (response) => {
+        console.log(response.data.message);
+      });
     })
     .then( () => {
       this.setState({
