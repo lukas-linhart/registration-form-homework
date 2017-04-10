@@ -94,7 +94,9 @@ class RegistrationForm extends Component {
         label: 'Email',
         validationHandler: this.validateEmail.bind(this)
       },
-      address: { label: 'Address' },
+      address: {label: 'Address',
+        validationHandler: this.validateAddress.bind(this)
+      },
       birthdate: {
         label: 'Birthday',
         placeholder: DATE_FORMAT,
@@ -198,6 +200,30 @@ class RegistrationForm extends Component {
     .catch( (err) => {
       this.setState({
         emailError: err.message
+      });
+    });
+  }
+
+  validateAddress() {
+    const address = this.state.addressValue.trim();
+    return Promise.resolve()
+    .then( () => {
+      if (address.length === 0) {
+        throw new Error(`Address can't be empty`);
+      }
+    })
+    .then( () => {
+      console.log('TODO: send request to server');
+    })
+    .then( () => {
+      this.setState({
+        addressIsValid: true,
+        addressError: ''
+      });
+    })
+    .catch( (err) => {
+      this.setState({
+        addressError: err.message
       });
     });
   }
