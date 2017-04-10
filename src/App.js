@@ -15,6 +15,7 @@ class FormField extends Component {
           value={this.props.value}
           error={this.props.error}
           changeHandler={this.props.changeHandler}
+          blurHandler={this.props.blurHandler}
         />
     );
   };
@@ -35,6 +36,7 @@ class FormInput extends Component {
             value={this.props.value}
             placeholder={this.props.placeholder}
             onChange={this.props.changeHandler}
+            onBlur={this.props.blurHandler}
           />
           <div>{this.props.error}</div>
         </div>
@@ -71,7 +73,7 @@ class RegistrationForm extends Component {
     this.state = state;
 
     this.inputParams = {
-      firstName: { label: 'First name' },
+      firstName: { label: 'First name', validationHandler: this.validateFirstName },
       lastName: { label: 'Last name' },
       email: { label: 'Email' },
       address: { label: 'Address' },
@@ -81,6 +83,7 @@ class RegistrationForm extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputBlur = this.handleInputBlur.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -91,6 +94,17 @@ class RegistrationForm extends Component {
       [`${inputName}Error`]: '',
       [`${inputName}IsValid`]: false
     });
+  }
+
+  handleInputBlur(event) {
+    const inputName = event.target.name;
+    if (this.inputParams[inputName].validationHandler) {
+      this.inputParams[inputName].validationHandler();
+    }
+  }
+
+  validateFirstName() {
+    console.log('validating first name');
   }
 
   handleSubmit(event) {
@@ -111,6 +125,7 @@ class RegistrationForm extends Component {
             value={this.state[`${fieldName}Value`]}
             error={this.state[`${fieldName}Error`]}
             changeHandler={this.handleInputChange}
+            blurHandler={this.handleInputBlur}
           />
       );
     }
