@@ -9,11 +9,12 @@ class FormField extends Component {
           name={this.props.name}
           label={this.props.label}
           value={this.props.value}
+          error={this.props.error}
+          changeHandler={this.props.changeHandler}
         />
     );
   };
 }
-
 
 
 class FormInput extends Component {
@@ -27,8 +28,9 @@ class FormInput extends Component {
           <input
             name={this.props.name}
             value={this.props.value}
+            onChange={this.props.changeHandler}
           />
-          <div>error placeholder</div>
+          <div>{this.props.error}</div>
         </div>
       </div>
     );
@@ -50,6 +52,28 @@ class RegistrationForm extends Component {
       'password1',
       'password2'
     ];
+
+    // We need to first create this obj and only then assign it to state,
+    // as React complains that we should use setState, but that's no-op
+    // since at this point the component is not mounted.
+    let state = {};
+    for (let inputName of this.inputs) {
+      state[`${inputName}Value`] = 'value placeholder';
+      state[`${inputName}Error`] = 'error placeholder';
+      state[`${inputName}IsValid`] = false;
+    }
+    this.state = state;
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const inputName = event.target.name;
+    this.setState({
+      [`${inputName}Value`]: event.target.value,
+      [`${inputName}Error`]: '',
+      [`${inputName}IsValid`]: false
+    });
   }
 
   render() {
@@ -60,7 +84,9 @@ class RegistrationForm extends Component {
             key={fieldName}
             name={fieldName}
             label={fieldName}
-            value=""
+            value={this.state[`${fieldName}Value`]}
+            error={this.state[`${fieldName}Error`]}
+            changeHandler={this.handleInputChange}
           />
       );
     }
