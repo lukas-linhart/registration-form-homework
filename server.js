@@ -45,5 +45,12 @@ app.post('/validate', function(req, res) {
 });
 
 
+app.post('/register', function(req, res) {
+  const data = req.body;
+  console.log(data);
+  return res.send({ message: "Huge success!!! :trollface:" });
+});
+
+
 app.listen(SERVER_PORT, () => console.log(`Listening on port ${SERVER_PORT}`));
 

@@ -310,9 +310,32 @@ class RegistrationForm extends Component {
 
     // When the page is fresh, all inputs are empty but invalid,
     // we need to explicitly validate them now.
-    this.inputs.map( (inputName) => {
-      return this.inputParams[inputName].validationHandler();
-    });
+    this.inputs.map( (inputName) =>
+      this.inputParams[inputName].validationHandler()
+    );
+
+    let valid = this.inputs.every( (inputName) =>
+      this.state[`${inputName}IsValid`]
+    );
+    if (valid) {
+      let payload = {
+        firstName: this.state.firstNameValue,
+        lastName: this.state.lastNameValue,
+        email: this.state.emailValue,
+        address: this.state.addressValue,
+        birthdate: this.state.birthdateValue,
+        password: this.state.password1Value,
+      };
+      axios.post('/register', payload).then( (response) => {
+        console.log(response.data);
+        for (let inputName of this.inputs) {
+          this.setState({
+            [`${inputName}Value`]: '',
+            [`${inputName}IsValid`]: false,
+          });
+        }
+      });
+    }
   }
 
   render() {
