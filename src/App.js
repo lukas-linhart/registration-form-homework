@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const DATE_FORMAT = 'DD.MM.YYYY';
+
 
 class FormField extends Component {
   render() {
@@ -8,6 +10,8 @@ class FormField extends Component {
         <FormInput
           name={this.props.name}
           label={this.props.label}
+          type={this.props.type || "text"}
+          placeholder={this.props.placeholder}
           value={this.props.value}
           error={this.props.error}
           changeHandler={this.props.changeHandler}
@@ -26,8 +30,10 @@ class FormInput extends Component {
         </div>
         <div>
           <input
+            type={this.props.type}
             name={this.props.name}
             value={this.props.value}
+            placeholder={this.props.placeholder}
             onChange={this.props.changeHandler}
           />
           <div>{this.props.error}</div>
@@ -58,11 +64,21 @@ class RegistrationForm extends Component {
     // since at this point the component is not mounted.
     let state = {};
     for (let inputName of this.inputs) {
-      state[`${inputName}Value`] = 'value placeholder';
-      state[`${inputName}Error`] = 'error placeholder';
+      state[`${inputName}Value`] = '';
+      state[`${inputName}Error`] = '';
       state[`${inputName}IsValid`] = false;
     }
     this.state = state;
+
+    this.inputParams = {
+      firstName: { label: 'First name' },
+      lastName: { label: 'Last name' },
+      email: { label: 'Email' },
+      address: { label: 'Address' },
+      birthdate: { label: 'Birthday', placeholder: DATE_FORMAT },
+      password1: { label: 'Enter password', type: 'password' },
+      password2: { label: 'Verify password', type: 'password' }
+    };
 
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -83,7 +99,9 @@ class RegistrationForm extends Component {
           <FormField
             key={fieldName}
             name={fieldName}
-            label={fieldName}
+            label={this.inputParams[fieldName].label}
+            type={this.inputParams[fieldName].type}
+            placeholder={this.inputParams[fieldName].placeholder}
             value={this.state[`${fieldName}Value`]}
             error={this.state[`${fieldName}Error`]}
             changeHandler={this.handleInputChange}
