@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "age-calculator": "^1.0.0",
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
     "email-validator": "^1.0.7",
+    "express": "^4.15.2",
     "moment": "^2.18.1",
     "react": "^15.5.3",
     "react-dom": "^15.5.3"
@@ -14,6 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "server": "node ./server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
