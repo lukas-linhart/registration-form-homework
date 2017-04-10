@@ -86,8 +86,16 @@ class RegistrationForm extends Component {
       email: { label: 'Email' },
       address: { label: 'Address' },
       birthdate: { label: 'Birthday', placeholder: DATE_FORMAT },
-      password1: { label: 'Enter password', type: 'password' },
-      password2: { label: 'Verify password', type: 'password' }
+      password1: {
+        label: 'Enter password',
+        type: 'password',
+        validationHandler: this.validatePassword1.bind(this)
+      },
+      password2: {
+        label: 'Verify password',
+        type: 'password',
+        validationHandler: this.validatePassword2.bind(this)
+      }
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -150,6 +158,41 @@ class RegistrationForm extends Component {
     this.setState({
       lastNameIsValid: true,
       lastNameError: ''
+    });
+  }
+
+  validatePassword1() {
+    const length = this.state.password1Value.length;
+    if (length === 0) {
+      this.setState({
+        password1Error: `Password can't be empty`
+      });
+      return;
+    }
+    this.setState({
+      password1IsValid: true,
+      password1Error: ''
+    });
+  }
+
+  validatePassword2() {
+    const password1 = this.state.password1Value;
+    const password2 = this.state.password2Value;
+    if (password2.length === 0) {
+      this.setState({
+        password2Error: `Password can't be empty`
+      });
+      return;
+    }
+    if (password1 !== password2) {
+      this.setState({
+        password2Error: `Passwords don't match`
+      });
+      return;
+    }
+    this.setState({
+      password2IsValid: true,
+      password2Error: ''
     });
   }
 
