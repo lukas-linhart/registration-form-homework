@@ -34,12 +34,13 @@ class FormField extends Component {
 class FormInput extends Component {
   render() {
     return (
-      <div>
-        <div>
+      <div className="inputRow">
+        <div className="labelBlock">
           <label>{this.props.label}</label>
         </div>
-        <div>
+        <div className="inputBlock">
           <input
+            className="inputElem"
             type={this.props.type}
             name={this.props.name}
             value={this.props.value}
@@ -47,7 +48,7 @@ class FormInput extends Component {
             onChange={this.props.changeHandler}
             onBlur={this.props.blurHandler}
           />
-          <div>{this.props.error}</div>
+          <div className="errorElem">{this.props.error}</div>
         </div>
       </div>
     );
@@ -317,9 +318,9 @@ class RegistrationForm extends Component {
     }
 
     return (
-        <form onSubmit={this.handleSubmit}>
+        <form className="registrationForm" onSubmit={this.handleSubmit}>
           {formFields}
-          <input type="submit" value="Register" />
+          <input className="submitButton" type="submit" value="Register" />
         </form>
     );
   }
