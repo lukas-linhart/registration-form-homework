@@ -307,7 +307,12 @@ class RegistrationForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('no submit yet, sry :troll:');
+
+    // When the page is fresh, all inputs are empty but invalid,
+    // we need to explicitly validate them now.
+    this.inputs.map( (inputName) => {
+      return this.inputParams[inputName].validationHandler();
+    });
   }
 
   render() {
