@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const moment = require('moment');
+const ageCalculator = require('age-calculator');
+
+
 const DATE_FORMAT = 'DD.MM.YYYY';
 const FIRST_NAME_MAX_LENGTH = 20;
 const LAST_NAME_MAX_LENGTH = 30;
+const MIN_AGE = 18;
+const MAX_AGE = 120;
 
 
 class FormField extends Component {
@@ -85,7 +91,11 @@ class RegistrationForm extends Component {
       },
       email: { label: 'Email' },
       address: { label: 'Address' },
-      birthdate: { label: 'Birthday', placeholder: DATE_FORMAT },
+      birthdate: {
+        label: 'Birthday',
+        placeholder: DATE_FORMAT,
+        validationHandler: this.validateBirthdate.bind(this)
+      },
       password1: {
         label: 'Enter password',
         type: 'password',
@@ -158,6 +168,36 @@ class RegistrationForm extends Component {
     this.setState({
       lastNameIsValid: true,
       lastNameError: ''
+    });
+  }
+
+  validateBirthdate() {
+    const birthdate = this.state.birthdateValue.trim();
+    if (birthdate.length === 0) {
+      this.setState({
+        birthdateError: `Birthdate can't be empty`
+      });
+      return;
+    }
+    if (moment(birthdate, DATE_FORMAT).isValid() === false) {
+      this.setState({
+        birthdateError: `Invalid birthdate format`
+      });
+      return;
+    }
+    const [day, month, year] = birthdate.split('.');
+    const age = new ageCalculator.AgeFromDateString(
+      `${year}-${month}-${day}`
+    ).age;
+    if (age < MIN_AGE || age > MAX_AGE) {
+      this.setState({
+        birthdateError: `Age must be between ${MIN_AGE} and ${MAX_AGE} years`
+      });
+      return;
+    }
+    this.setState({
+      birthdateIsValid: true,
+      birthdateError: ''
     });
   }
 
