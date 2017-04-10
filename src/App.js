@@ -305,6 +305,18 @@ class RegistrationForm extends Component {
     });
   }
 
+  clearAllInputs() {
+    this.inputs.map( inputName =>
+      this.setState({ [`${inputName}Value`]: '' })
+    );
+  }
+
+  invalidateAllInputs() {
+    this.inputs.map( inputName =>
+      this.setState({ [`${inputName}IsValid`]: false })
+    );
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
@@ -328,12 +340,8 @@ class RegistrationForm extends Component {
       };
       axios.post('/register', payload).then( (response) => {
         console.log(response.data);
-        for (let inputName of this.inputs) {
-          this.setState({
-            [`${inputName}Value`]: '',
-            [`${inputName}IsValid`]: false,
-          });
-        }
+        this.invalidateAllInputs();
+        this.clearAllInputs();
       });
     }
   }
