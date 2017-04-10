@@ -220,7 +220,12 @@ class RegistrationForm extends Component {
       }
     })
     .then( () => {
-      console.log('TODO: send request to server');
+      return axios.post('/validate', { address: address })
+      .then( (response) => {
+        if (response.data.valid === false) {
+          throw new Error(response.data.errorMessage);
+        }
+      });
     })
     .then( () => {
       this.setState({

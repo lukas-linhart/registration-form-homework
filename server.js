@@ -13,6 +13,11 @@ const existingUsers = new Set([
   'jane@doe.com',
 ]);
 
+const validAddresses = new Set([
+  'Riverview',
+  'Lavande',
+]);
+
 
 app.post('/validate', function(req, res) {
   const data = req.body;
@@ -20,6 +25,14 @@ app.post('/validate', function(req, res) {
     let response;
     if (existingUsers.has(data.email)) {
       response = { valid: false, errorMessage: "The username already exists" };
+    } else {
+      response = { valid: true, errorMessage: "" };
+    }
+    return res.send(response);
+  } else if ('address' in data) {
+    let response;
+    if (!validAddresses.has(data.address)) {
+      response = { valid: false, errorMessage: "Invalid address" };
     } else {
       response = { valid: true, errorMessage: "" };
     }
