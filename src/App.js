@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const emailValidator = require('email-validator');
 const moment = require('moment');
 const ageCalculator = require('age-calculator');
 
@@ -89,7 +90,10 @@ class RegistrationForm extends Component {
         label: 'Last name',
         validationHandler: this.validateLastName.bind(this)
       },
-      email: { label: 'Email' },
+      email: {
+        label: 'Email',
+        validationHandler: this.validateEmail.bind(this)
+      },
       address: { label: 'Address' },
       birthdate: {
         label: 'Birthday',
@@ -168,6 +172,33 @@ class RegistrationForm extends Component {
     this.setState({
       lastNameIsValid: true,
       lastNameError: ''
+    });
+  }
+
+  validateEmail() {
+    const email = this.state.emailValue.trim();
+    return Promise.resolve()
+    .then( () => {
+      if (email.length === 0) {
+        throw new Error(`Email can't be empty`);
+      }
+      if (emailValidator.validate(email) === false) {
+        throw new Error(`Invalid email address format`);
+      }
+    })
+    .then( () => {
+      console.log('TODO: send request to server');
+    })
+    .then( () => {
+      this.setState({
+        emailIsValid: true,
+        emailError: ''
+      });
+    })
+    .catch( (err) => {
+      this.setState({
+        emailError: err.message
+      });
     });
   }
 
