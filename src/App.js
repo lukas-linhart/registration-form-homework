@@ -81,6 +81,7 @@ class RegistrationForm extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleInputChange(event) {
@@ -90,6 +91,11 @@ class RegistrationForm extends Component {
       [`${inputName}Error`]: '',
       [`${inputName}IsValid`]: false
     });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log('no submit yet, sry :troll:');
   }
 
   render() {
