@@ -193,7 +193,9 @@ class RegistrationForm extends Component {
     .then( () => {
       return axios.post('/validate', { email: email })
       .then( (response) => {
-        console.log(response.data.message);
+        if (response.data.valid === false) {
+          throw new Error(response.data.errorMessage);
+        }
       });
     })
     .then( () => {

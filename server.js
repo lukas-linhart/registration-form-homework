@@ -8,11 +8,27 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
+const existingUsers = new Set([
+  'john@doe.com',
+  'jane@doe.com',
+]);
+
+
 app.post('/validate', function(req, res) {
   const data = req.body;
-  console.log("something came in");
-  let response = { message: "server is alive and well" };
-  return res.send(response);
+  if ('email' in data) {
+    let response;
+    if (existingUsers.has(data.email)) {
+      response = { valid: false, errorMessage: "The username already exists" };
+    } else {
+      response = { valid: true, errorMessage: "" };
+    }
+    return res.send(response);
+  } else {
+    return res
+      .status(400)
+      .send({ errorMessage: "Cannot validate that. Sry." });
+  }
 });
 
 
